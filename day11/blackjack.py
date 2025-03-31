@@ -1,3 +1,7 @@
+# TODO needs work
+# computer turns separate from human's
+# computer cards equal to human's
+
 import random
 
 cards = {
@@ -22,25 +26,30 @@ def select_random_card():
 def calculate_points(cards_in_hand):
     points = 0
     for card in cards_in_hand:
+        if len(cards[card]) > 1:
+            if points + cards[card][1] > 21:
+                points += cards[card][0]
+            else:
+                points += cards[card][1]
         points += cards[card][0]
     return points
 
 user_cards = []
-user_cards += select_random_card()
-user_cards += select_random_card()
+user_cards.append(select_random_card())
+user_cards.append(select_random_card())
 print(f"Your cards: [{', '.join(user_cards)}]")
 
 computer_cards = []
-computer_cards += select_random_card()
+computer_cards.append(select_random_card())
 print(f"Computer's first card: {computer_cards[0]}")
 
 game_over = False
 while not game_over:
     user_input = input("Type 'y' to get another card, type anything else to pass: ")
     if user_input == "y":
-        user_cards += select_random_card()
+        user_cards.append(select_random_card())
         print(f"Your cards: [{', '.join(user_cards)}]")
-        computer_cards += select_random_card()
+        computer_cards.append(select_random_card())
         print(f"Computer cards: [{', '.join(computer_cards)}]")
     else:
         game_over = True
