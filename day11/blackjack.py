@@ -1,7 +1,3 @@
-# TODO needs work
-# computer turns separate from human's
-# computer cards equal to human's
-
 import random
 
 cards = {
@@ -27,11 +23,13 @@ def calculate_points(cards_in_hand):
     points = 0
     for card in cards_in_hand:
         if len(cards[card]) > 1:
-            if points + cards[card][1] > 21:
+            temp_points = points
+            if temp_points + cards[card][1] > 21:
                 points += cards[card][0]
             else:
                 points += cards[card][1]
-        points += cards[card][0]
+        else:
+            points += cards[card][0]
     return points
 
 user_cards = []
@@ -41,7 +39,8 @@ print(f"Your cards: [{', '.join(user_cards)}]")
 
 computer_cards = []
 computer_cards.append(select_random_card())
-print(f"Computer's first card: {computer_cards[0]}")
+computer_cards.append(select_random_card())
+print(f"Computer cards: [{', '.join(computer_cards)}]")
 
 game_over = False
 while not game_over:
@@ -49,12 +48,17 @@ while not game_over:
     if user_input == "y":
         user_cards.append(select_random_card())
         print(f"Your cards: [{', '.join(user_cards)}]")
-        computer_cards.append(select_random_card())
+        if calculate_points(computer_cards) <= 20:
+            computer_cards.append(select_random_card())
         print(f"Computer cards: [{', '.join(computer_cards)}]")
     else:
         game_over = True
         player_points = calculate_points(user_cards)
         computer_points = calculate_points(computer_cards)
+        while computer_points <= 15:
+            computer_cards.append(select_random_card())
+            computer_points = calculate_points(computer_cards)
+        print(f"Computer cards: [{', '.join(computer_cards)}]")
         if player_points > 21 and computer_points > 21:
             print("Unfortunately, you both went over and ended with a draw")
         elif player_points > 21:
