@@ -28,6 +28,10 @@ class Snake:
             new_y = self.segments[seg_num - 1].turtle.ycor()
             self.segments[seg_num].turtle.goto(new_x, new_y)
         self.segments[0].turtle.forward(MOVE_DISTANCE)
+
+    def grow(self):
+        pos = self.segments[-1].turtle.pos()
+        self.segments.append(SnakeBody(pos))
     
     def up(self):
         if (self.segments[0].turtle.heading() != DIRECTION_DOWN):
@@ -44,3 +48,9 @@ class Snake:
     def right(self):
         if (self.segments[0].turtle.heading() != DIRECTION_LEFT):
             self.segments[0].turtle.setheading(DIRECTION_RIGHT)
+
+    def distance(self, target):
+        return self.segments[0].turtle.distance(target)
+    
+    def get_head_pos(self):
+        return self.segments[0].turtle.pos()
