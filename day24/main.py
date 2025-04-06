@@ -17,11 +17,17 @@ snake = Snake()
 spawner = Food_Spawner(WIDTH, HEIGHT)
 score = ScoreBoard(HEIGHT)
 
+def quit_game():
+    global game_on
+    score.game_over()
+    game_on = False
+
 screen.listen()
 screen.onkey(snake.up, "Up")
 screen.onkey(snake.down, "Down")
 screen.onkey(snake.left, "Left")
 screen.onkey(snake.right, "Right")
+screen.onkey(quit_game, "q")
 
 def is_wall_hit(pos, limit):
     return pos >= limit / 2 or pos <= -(limit / 2)
@@ -41,13 +47,13 @@ while game_on:
     # Collision with wall
     head_pos = snake.get_head_pos()
     if is_wall_hit(head_pos[0], WIDTH) or is_wall_hit(head_pos[1], HEIGHT):
-        game_on = False
-        score.game_over()
+        score.reset()
+        snake.reset()
     
     # Collision with tail
     for segment in snake.segments[1:]:
         if snake.distance(segment.turtle.pos()) < 10:
-            game_on = False
-            score.game_over()
+            score.reset()
+            snake.reset()
 
 screen.exitonclick()

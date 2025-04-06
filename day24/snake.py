@@ -54,3 +54,10 @@ class Snake:
     
     def get_head_pos(self):
         return self.segments[0].turtle.pos()
+    
+    def reset(self):
+        for segment in self.segments:
+            segment.turtle.goto(1000, 1000)
+        self.segments.clear()
+        for pos in START_POS:
+            self.segments.append(SnakeBody(pos))

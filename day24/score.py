@@ -9,17 +9,24 @@ class ScoreBoard:
         self.turtle.color("white")
 
         self.score = 0
+        self.high_score = 0
         self.print_score()
         self.turtle.hideturtle()
 
     def print_score(self):
         self.turtle.clear()
-        self.turtle.write(f"Score = {self.score}", align="center", font=("Arial", 20, "normal"))
+        self.turtle.write(f"Score = {self.score}  Highest score = {self.high_score}", align="center", font=("Arial", 20, "normal"))
 
-    def game_over(self):
-        self.turtle.goto(0, 0)
-        self.turtle.write(f"GAME OVER!", align="center", font=("Arial", 20, "normal"))
+    def reset(self):
+        if self.score > self.high_score:
+            self.high_score = self.score
+        self.score = 0
+        self.print_score()
 
     def add_score(self):
         self.score += 1
         self.print_score()
+
+    def game_over(self):
+        self.turtle.goto(0, 0)
+        self.turtle.write("GAME OVER", align="center", font=("Arial", 20, "normal"))
