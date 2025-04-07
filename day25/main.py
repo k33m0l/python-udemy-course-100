@@ -28,10 +28,7 @@ while len(correct_states) < 50:
         t.goto(state_data.x.item(), state_data.y.item())
         t.write(state_data.state.item(), align="center")
 
-missing_states = []
-for state in states:
-    if state not in correct_states:
-        missing_states.append(state)
+missing_states = [state for state in states if state not in correct_states]
 new_data = pandas.DataFrame(missing_states)
 new_data.to_csv("states_to_learn.csv")
 
