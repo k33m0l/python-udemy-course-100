@@ -18,6 +18,20 @@ def save():
 
         messagebox.showinfo(title="Success", message=f"{password} was saved successfully")
 
+# ---------------------------- SEARCH --------------------------------#
+def search_pass():
+    try:
+        with open("saved.txt") as file:
+            website = website_input.get()
+            data = {parts[0]: parts[1:] for line in file.readlines() if (parts := line.split(" | "))}
+            user_id = data[website][0]
+            password = data[website][1]
+            messagebox.showinfo(title="Found", message=f"Your password was found!\nEmail:{user_id}\nPassword:{password}")
+    except FileNotFoundError:
+        messagebox.showerror(title="Not Found", message=f"Password for {website} not found!")
+    except KeyError:
+        messagebox.showerror(title="Not Found", message=f"Password for {website} not found!")
+
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Password Manager")
@@ -37,6 +51,7 @@ password_input = Entry(width=21)
 
 gen_pass_button = Button(text="Generate Password", command=gen_pass)
 add_button = Button(text="Add", command=save, width=36)
+search_button = Button(text="Search", command=search_pass)
 
 canvas.grid(row=0, column=1, sticky=EW)
 
@@ -44,12 +59,13 @@ website_label.grid(row=1, column=0, sticky=EW)
 user_id_label.grid(row=2, column=0, sticky=EW)
 password_label.grid(row=3, column=0, sticky=EW)
 
-website_input.grid(row=1, column=1, columnspan=2, sticky=EW)
+website_input.grid(row=1, column=1, sticky=EW)
 user_id_input.grid(row=2, column=1, columnspan=2, sticky=EW)
 password_input.grid(row=3, column=1, sticky=EW)
 
 gen_pass_button.grid(row=3, column=2, sticky=EW)
 add_button.grid(row=4, column=1, columnspan=2, sticky=EW)
+search_button.grid(row=1, column=2, sticky=EW)
 
 website_input.focus()
 user_id_input.insert(0, "example@example.com")
