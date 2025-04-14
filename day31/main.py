@@ -9,19 +9,30 @@ import pandas
 import random
 
 dictionary = pandas.read_csv("data/french_words.csv").to_dict(orient="records")
+current_card = {}
+
+def flip_card():
+    canvas.itemconfig(card_bg, image=card_back)
+    canvas.itemconfig(language_text, text=ENGLISH_LANGUAGE_KEY)
+    canvas.itemconfig(word_text, text=current_card[ENGLISH_LANGUAGE_KEY])
 
 def next_word():
-    current = random.choice(dictionary)
+    global current_card, flip_timer
+    window.after_cancel(flip_timer)
+    canvas.itemconfig(card_bg, image=card_front)
+    current_card = random.choice(dictionary)
     canvas.itemconfig(language_text, text=FRENCH_LANGUAGE_KEY)
-    canvas.itemconfig(word_text, text=current[FRENCH_LANGUAGE_KEY])
+    canvas.itemconfig(word_text, text=current_card[FRENCH_LANGUAGE_KEY])
+    flip_timer = window.after(3000, flip_card)
 
 window = Tk()
 window.title("Flashcard App")
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
 
 card_front = PhotoImage(file="images/card_front.png")
+card_back = PhotoImage(file="images/card_back.png")
 canvas = Canvas(width=800, height=526, bg=BACKGROUND_COLOR, highlightthickness=0)
-canvas.create_image(400, 263, image=card_front)
+card_bg = canvas.create_image(400, 263, image=card_front)
 canvas.grid(row=0, column=0, columnspan=2)
 
 language_text = canvas.create_text(400, 150, text="Language", font=LANGUAGE_FONT)
@@ -33,5 +44,9 @@ accept_button.grid(row=1, column=1)
 deny_image = PhotoImage(file="images/wrong.png")
 deny_button = Button(image=deny_image, highlightthickness=0)
 deny_button.grid(row=1, column=0)
+
+# Init a first card to show
+flip_timer = window.after(3000, flip_card)
+next_word()
 
 window.mainloop()
