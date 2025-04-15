@@ -2,9 +2,10 @@ from tkinter import *
 import requests
 
 def get_quote():
-    resp = requests.get(url="https://api.kanye.rest/").json()
-    quote = resp["quote"]
-    canvas.itemconfig(quote_text, text=quote)
+    resp = requests.get(url="https://api.kanye.rest/")
+    resp.raise_for_status()
+    data = resp.json()
+    canvas.itemconfig(quote_text, text=data["quote"])
 
 window = Tk()
 window.title("Kanye Says...")
