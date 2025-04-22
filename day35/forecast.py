@@ -1,6 +1,6 @@
 import requests
 
-API_KEY = "REPLACE_ME" # TODO replace me before commit!
+API_KEY = "REPLACE_ME"
 
 parameters = {
     "lat": 47.49,
