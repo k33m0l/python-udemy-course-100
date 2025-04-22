@@ -1,0 +1,1 @@
+Requires an API key from https://home.openweathermap.org/
