@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
 
-MAX_CLICK_COUNT = 10000
+MAX_CLICK_COUNT = 10000000
 
 driver = webdriver.Firefox()
 driver.get("https://orteil.dashnet.org/cookieclicker/")
