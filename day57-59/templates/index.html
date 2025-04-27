@@ -1,32 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/styles.css">
-</head>
-<body>
-<div class="wrapper">
-    <div class="top">
-        <div class="title"><h1>My Blog</h1></div>
-    </div>
-    {% for post in posts %}
-    	<div class="content">
-        	<div class="card">
-			<h2>{{ post["title"] }}</h2>
-			<p class="text">{{ post["subtitle"] }}</p>
-			{% if not is_main %}
-				<p class="text">{{ post["body"] }}</p>
-			{% else %}
-				<a href="{{ url_for('blog', post_num=post["id"]) }}">Read</a>
-			{% endif %}
-        	</div>
-    	</div>
-    {% endfor %}
-</div>
-</body>
-<footer>
-    <p>Made with ♥️ in London.</p>
-</footer>
-</html>
+{% include "header.html" %}
+	<header class="masthead" style="background-image: url('https://images.unsplash.com/photo-1470092306007-055b6797ca72?ixlib=rb-1.2.1&auto=format&fit=crop&w=668&q=80')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>Clean Blog</h1>
+                            <span class="subheading">A Blog Theme by Start Bootstrap</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+	<div class="container px-4 px-lg-5">
+        	<div class="row gx-4 gx-lg-5 justify-content-center">
+                	<div class="col-md-10 col-lg-8 col-xl-7">
+
+				{% for post in posts %}
+    					<div class="post-preview">
+        					<div class="card">
+							<h2 class="post-title">{{ post["title"] }}</h2>
+							<h3 class="post-subtitle">{{ post["subtitle"] }}</h3>
+							{% if not is_main %}
+								<p>{{ post["body"] }}</p>
+							{% else %}
+								<a href="{{ url_for('blog', post_num=post["id"]) }}">Read</a>
+							{% endif %}
+        					</div>
+    					</div>
+    				{% endfor %}
+
+                    		<div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+			</div>
+		</div>
+	</div>
+{% include "footer.html" %}
