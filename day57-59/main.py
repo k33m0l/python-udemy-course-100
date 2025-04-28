@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
 
 URL="https://api.npoint.io/c790b4d5cab58020d391"
@@ -23,6 +23,19 @@ def about():
 @app.route("/contact")
 def contact():
     return render_template("contact.html")
+
+@app.route("/send", methods=["POST"])
+def send_contact():
+    name = request.form["name"]
+    email = request.form["email"]
+    phone = request.form["phone"]
+    message = request.form["message"]
+    return "<p>" \
+        f"Username: {name}, " \
+        f"Email: {email}, " \
+        f"Phone number: {phone}, " \
+        f"Message: {message}" \
+        "</p>"
 
 if __name__ == "__main__":
     app.run()
