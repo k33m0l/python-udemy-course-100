@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Boolean
+from sqlalchemy import Integer, String, Boolean, column
+import random
 
 '''
 Install the required packages first: 
@@ -41,6 +42,9 @@ class Cafe(db.Model):
     can_take_calls: Mapped[bool] = mapped_column(Boolean, nullable=False)
     coffee_price: Mapped[str] = mapped_column(String(250), nullable=True)
 
+    def to_dict(self):
+        self.__dict__.pop("_sa_instance_state")
+        return self.__dict__
 
 with app.app_context():
     db.create_all()
@@ -52,6 +56,25 @@ def home():
 
 
 # HTTP GET - Read Record
+@app.route("/random")
+def random_shop():
+    all_cafes = db.session.execute(db.select(Cafe)).scalars().all()
+    random_cafe = random.choice(all_cafes)
+    return jsonify(cafe=random_cafe.to_dict())
+
+@app.route("/all")
+def get_all_shop():
+    all_cafes = db.session.execute(db.select(Cafe).order_by(Cafe.name)).scalars().all()
+    return jsonify(cafes=[cafe.to_dict() for cafe in all_cafes])
+
+@app.route("/search")
+def search_shop():
+    query_location = request.args.get("loc")
+    all_cafes = db.session.execute(db.select(Cafe).where(Cafe.location == query_location)).scalars().all()
+    if all_cafes:
+        return jsonify(cafes=[cafe.to_dict() for cafe in all_cafes])
+    else:
+        return jsonify(error={"Not Found:": "Cafe does not exists at that location"}), 404
 
 # HTTP POST - Create Record
 
