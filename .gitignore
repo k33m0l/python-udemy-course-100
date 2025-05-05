@@ -2,3 +2,4 @@ __pycache__/
 environment/
 venv/
 pyrightconfig.json
+.ipynb_checkpoints/
